@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLString } = require('graphql');
+const { GraphQLObjectType, GraphQLString, GraphQLList } = require('graphql');
 
 const countries = [
   { id: 1, name: 'Nigeria', code: 'NG', continent: 'Africa' },
@@ -7,12 +7,19 @@ const countries = [
 ];
 
 const CountryType = new GraphQLObjectType({
-  name: 'country',
+  name: 'Country',
   fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
     code: { type: GraphQLString },
-    continent: { type: GraphQLString }
+    continent: { type: GraphQLString },
+    cities: {
+      type: new GraphQLList(require('./city').CityType),
+      resolve(parent, args) {
+        const cities = require('./city').cities;
+        return cities.filter(city => `${city.countryId}` === `${parent.id}`);
+      }
+    }
   })
 });
 

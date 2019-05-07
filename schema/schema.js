@@ -8,9 +8,7 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     city: {
       type: CityType,
-      args: {
-        id: { type: GraphQLID }
-      },
+      args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return cities.find(city => `${city.id}` === args.id);
       }
